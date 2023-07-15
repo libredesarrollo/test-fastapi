@@ -64,7 +64,9 @@ def hello_world(user = Depends(verify_access_token),db: Session = Depends(get_da
     return { "hello": "world" }
 
 @app.get("/e_page")
-def page(page: int = Query(1, ge=1, le=20, title='Esta es la pagina que quieres ver'), size: int = Query(5, ge=5, le=20, title='Cuantos registros por pagina')):
+# name: Annotated[str, "this is just metadata"]
+def page(page: Annotated[int, Query(ge=1, le=20, title='Esta es la pagina que quieres ver')] = 1, size: Annotated[int,  Query(ge=5, le=20, title='Cuantos registros por pagina')] = 5 ):
+# def page(page: int = Query(1, ge=1, le=20, title='Esta es la pagina que quieres ver'), size: int = Query(5, ge=5, le=20, title='Cuantos registros por pagina')):
     return { "page": page,"size": size }
 
 @app.get("/e_phone/") # +34 111 12-34-56
