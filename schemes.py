@@ -11,8 +11,8 @@ class StatusType(str,Enum):
 
 class Category(BaseModel):
     name: str
-    # class Config:
-    #     schema_extra = {
+    # class ConfigDict:
+    #     json_schema_extra = {
     #         "example": {
     #             "id" : 1234,
     #             "name": "Cate 1"
@@ -24,8 +24,8 @@ class User(BaseModel):
     surname: str
     email: EmailStr
     website: str #HttpUrl
-    class Config:
-        orm_mode = True
+    class ConfigDict:
+        from_attributes = True
 
 class UserCreate(User):
     password: str
@@ -37,8 +37,8 @@ class AccessToken(BaseModel):
     user_id: int
     access_token: str
     expiration_date: datetime
-    class Config:
-        orm_mode = True
+    class ConfigDict: # NEWWWW
+        from_attributes = True  # NEWWWW
 
 class Task(BaseModel):
     name: str
@@ -63,9 +63,9 @@ class Task(BaseModel):
                 ):
         return cls(name=name, description=description, status=status,category_id=category_id,user_id=user_id)
 
-    class Config:
-        orm_mode=True
-        schema_extra = {
+    class ConfigDict:
+        from_attributes=True
+        json_schema_extra = { # NEWWWW
             "example": {
                 "id" : 123,
                 "name": "Salvar al mundo",
@@ -86,11 +86,11 @@ class Task(BaseModel):
             }
         }
 
-    @validator('name')
-    def name_alphanumeric_and_whitespace(cls, v):
-        if v.replace(" ", '').isalnum():
-            return v
-        raise ValueError('must be a alphanumeric')
+    # @validator('name')
+    # def name_alphanumeric_and_whitespace(cls, v):
+    #     if v.replace(" ", '').isalnum():
+    #         return v
+    #     raise ValueError('must be a alphanumeric')
         
 
 class TaskRead(Task):
