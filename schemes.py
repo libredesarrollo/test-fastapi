@@ -53,6 +53,9 @@ class Task(BaseModel):
     user_id: int = Field(gt=0)
     # tags: set[str] = set()
 
+    class ConfigDict:
+        from_attributes=True
+
     @classmethod
     def as_form(cls, 
                 name: str = Form(),
@@ -63,28 +66,31 @@ class Task(BaseModel):
                 ):
         return cls(name=name, description=description, status=status,category_id=category_id,user_id=user_id)
 
-    class ConfigDict:
-        from_attributes=True
-        json_schema_extra = { # NEWWWW
-            "example": {
-                "id" : 123,
-                "name": "Salvar al mundo",
-                "description": "Hola Mundo Desc",
-                "status": StatusType.PENDING,
-                "tag":["tag 1", "tag 2"],
-                "category": {
-                    "id":1234,
-                    "name":"Cate 1"
-                },
-                "user": {
-                    "id":12,
-                    "name":"Andres",
-                    "email":"admin@admin.com",
-                    "surname":"Cruz",
-                    "website":"http://desarrollolibre.net",
+
+    """model_config = {
+        "json_schema_extra": { 
+            "examples": [
+                {
+                    "id" : 1234,
+                    "name": "Salvar al mundo",
+                    "description": "Hola Mundo Desc",
+                    "status": StatusType.PENDING,
+                    "tag":["tag 1", "tag 2"],
+                    "category": {
+                        "id":1234,
+                        "name":"Cate 1"
+                    },
+                    "user": {
+                        "id":12,
+                        "name":"Andres",
+                        "email":"admin@admin.com",
+                        "surname":"Cruz",
+                        "website":"http://desarrollolibre.net",
+                    }
                 }
-            }
+            ]
         }
+    }"""
 
     # @validator('name')
     # def name_alphanumeric_and_whitespace(cls, v):
