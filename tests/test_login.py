@@ -102,3 +102,24 @@ async def test_index_task(default_client: httpx.AsyncClient, db: Session =  next
 
     assert response.status_code == 200
     assert len(response.json()["tasks"]) == len(tasks)
+
+
+from database import models
+
+@pytest.mark.asyncio
+async def test_delete_task(default_client: httpx.AsyncClient, db: Session =  next(get_database_session())) -> None:
+ 
+    id = 5
+
+    headers = {
+        'accept': 'application/json',
+        'Content-Type': 'application/json'
+    }
+
+    response = await default_client.delete('/tasks/'+str(id), headers=headers)
+
+    # task = crud.getById(id,db)
+    task = db.query(models.Task).get(id)
+
+    assert response.status_code == 404
+    assert task is None
