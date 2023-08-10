@@ -55,3 +55,24 @@ def test_create_user():
     # data = response.json()
     # assert data["email"] == "deadpool@example.com"
     # assert data["id"] == user_id
+def test_login_user():
+
+    payload = {
+        "username": "admintest@admin.com",
+        "password": "12345",
+    }
+
+    response = client.post(
+        "/token",
+        data=payload,
+    )
+
+    assert response.status_code == 200
+    data = response.json()
+    assert "access_token" in data
+
+    # response = client.get(f"/users/{user_id}")
+    # assert response.status_code == 200, response.text
+    # data = response.json()
+    # assert data["email"] == "deadpool@example.com"
+    # assert data["id"] == user_id
