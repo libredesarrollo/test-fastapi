@@ -119,11 +119,55 @@ def validate_token(token: str = Header()):
 #     return {'hello': 'FastAPI'}
 
 #VAR
-CurrentTaskId = Annotated[int, Depends(validate_token)]
-@app.get('/route-protected2')
-def protected_route2(CurrentTaskId,index:int):
-    return {'hello': 'FastAPI'}
+# # # def check_token(token: str = Header()) -> None:
+# # #     print(token)
+# # #     print("--------")
+# # #     if token != "YY3Gv1cNg2juWjU461Ow-Yjsk6saSEpm7IgYtQudqLY":
+# # #         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED)
+    
+# # # # Authorization = Annotated[str, Depends(check_token)]
+# # # @app.get('/route-protect')
+# # # def protect_route(authorization: str = Depends(check_token)):
+# # #     return {'hello': 'FastAPI'}
 #DEPENDS
+
+
+
+
+# @app.get('/route-protected', dependencies=[Depends(validate_token)])
+# def protected_route(index:int):
+#     return {'hello': 'FastAPI'}
+
+
+# VAR
+# Authorization = Annotated[int, Depends(validate_token)]
+
+
+# @app.get('/route-protected2')
+# def protected_route2(Authorization) -> dict:
+#     return {'hello': 'FastAPI'}
+
+
+# # # api_key_header = APIKeyHeader(name="Token")
+# # # def protect_route(db: Session = Depends(get_database_session), token: str = Depends(api_key_header)):
+# # #     user = db.query(User).join(AccessToken).filter(AccessToken.access_token == token).first()
+
+# # #     if user is None:
+# # #         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED)
+
+# # # @app.get("/route-protect", dependencies=[Depends(protect_route)])
+# # # def protect_route():
+# # #    return {"hello": "FASTAPI"}
+
+
+
+
+
+
+
+
+
+
 
 app.include_router(router)
 app.include_router(task_router, prefix='/tasks')

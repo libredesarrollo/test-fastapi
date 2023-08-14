@@ -76,3 +76,73 @@ def test_login_user():
     # data = response.json()
     # assert data["email"] == "deadpool@example.com"
     # assert data["id"] == user_id
+
+import pytest
+from authentication import  authentication
+from sqlalchemy.orm import Session
+
+@pytest.fixture(scope="module")
+async def access_token(db: Session = next(get_database_session())) -> str:
+    user = authentication.authenticate('admintest@admin.com','12345',db)
+    return authentication.create_access_token(user, db).access_token
+
+def test_protect_route(access_token: str) -> None:
+    print(access_token)
+    headers = {
+        "Content-Type": "application/json",
+        "Authorization": f"Bearer {access_token}",
+
+    }
+
+
+    response = client.get(
+        "/hello",
+        headers=headers
+    )
+
+    assert response.status_code == 200
+    data = response.json()
+    assert "hello" in data
+# def test_protect_route(access_token: str) -> None:
+#     print(access_token)
+#     headers = {
+#         "Content-Type": "application/json",
+#         "token": access_token
+#     }
+
+
+#     response = client.get(
+#         "/route-protect",
+#         headers=headers
+#     )
+
+#     assert response.status_code == 200
+#     data = response.json()
+#     assert "hello" in data
+
+
+# # # def test_route_oauth2_password_bearer() -> None:
+
+# # #     payload = {
+# # #         "username": "admintest@admin.com",
+# # #         "password": "12345",
+# # #     }
+
+# # #     response = client.post(
+# # #         "/token",
+# # #         data=payload,
+# # #     )
+
+# # #     assert response.status_code == 200
+# # #     data = response.json()
+# # #     assert "access_token" in data
+
+
+
+    # url = f"/event/{mock_event.id}"
+    # response = await default_client.delete(url, 
+    # headers=headers)
+    # assert response.status_code == 200
+    # assert response.json() == test_response
+
+
